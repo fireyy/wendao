@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no;" />
+	<meta charset="utf-8">
+	<title>问道</title>
+	<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="css/jquery.mobile.css" />
+	<script type="text/javascript">
+		var debug = (navigator.platform.indexOf("iPhone") < 0 && navigator.platform.indexOf("iPod") < 0 && navigator.platform.indexOf("iPad") < 0), tester = 1, dayluck = '1', waitDelay = null, askType = 0, DBver = 2;
+	</script>
+	<script type="text/javascript" charset="utf-8" src="phonegap-1.1.0.js"></script>
+	<script type="text/javascript" charset="utf-8" src="DatePicker.js"></script>
+	<script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+	<script type="text/javascript" charset="utf-8" src="js/inc.js"></script>
+	<script type="text/javascript" charset="utf-8" src="js/main.js"></script>
+	<script type="text/javascript" charset="utf-8" src="js/jquery.mobile.js"></script>
+</head>
+
+<body>
+<div data-role="page" id="userlist">
+    <div data-role="header" class="infoHeader"><i id="oku" class="smb">完成</i><i id="editu" class="smb">编辑</i><s></s></div>
+    <div data-role="none" class="cont">
+        <p>用户列表</p>
+        <ul id="profile_list" data-role="listview" data-inset="true" data-theme="a">
+        	<li class="add"><a id="cr_new">顺便看看</a></li>
+        </ul>
+    </div>
+</div>
+<div data-role="page" id="info">
+	<div data-role="header" class="infoHeader"><i id="r2userlist" class="smb">返回</i><i id="editUname" class="smb">修改用户名</i><s></s></div>
+	<div data-role="none" class="cont">
+		<p>选择属相</p>
+		<input type="hidden" id="sxv" value="" />
+		<ul class="shengxiao">
+			<li class="i1" rev="1">鼠</li>
+			<li class="i2" rev="2">牛</li>
+			<li class="i3" rev="3">虎</li>
+			<li class="i4" rev="4">兔</li>
+			<li class="i5" rev="5">龙</li>
+			<li class="i6" rev="6">蛇</li>
+			<li class="i7" rev="7">马</li>
+			<li class="i8" rev="8">羊</li>
+			<li class="i9" rev="9">猴</li>
+			<li class="i10" rev="10">鸡</li>
+			<li class="i11" rev="11">狗</li>
+			<li class="i12" rev="12">猪</li>
+			<li class="i13" rev="13">问号</li>
+		</ul>
+		<span><button class="begin" id="dataSubmit" data-role="none"><em>开　始</em></button><button class="begin" id="dataEdit" data-role="none"><em>保　存</em></button></span>
+	</div>
+</div>
+<div id="ask" data-role="page">
+	<div data-role="header" class="infoHeader"><i id="r2info" class="smb">返回</i><s></s></div>
+
+	<div data-role="none" class="cont">
+		<div class="onToday">
+			<p class="onTodayP">
+				<span id="weatherData"><strong>载入中...</strong></span><br />
+				<span id="lunarDate"></span>
+			</p>
+			<div class="todayThings">
+				<table class="dateToday">
+					<tr><td>今</td><td>天</td><td>：</td><td id="today_m" class="days"></td><td>月</td><td id="today_d" class="days"></td><td>日</td></tr>
+				</table>
+				<p class="todayThingsP">
+					<strong id="today_things"></strong>
+					<span id="today_lucky" class="text-things"></span>
+				</p>
+			</div>
+			<div class="dateForm" data-role="fieldcontain">
+			   <label for="cate_value" class="select">询问：</label>
+			   <select id="cate_value"></select>
+				<div><button data-role="none" class="begin" id="submitAsk"><em>问一问</em></button></div>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="goOnask" data-role="page">
+	<div data-role="header" class="infoHeader"><i id="r2ask" class="smb">返回</i><i id="createNew" class="smb">创建新用户</i><s></s></div>
+	<div data-role="none" class="cont">
+		<div class="onToday">
+			<p id="ask_lunar" class="onTodayP gAskDay"></p>
+			<div class="todayThings bgP">
+				<p class="todayThingsP">
+					<strong id="ask_things"></strong>
+					<span id="ask_lucky" class="text-things text-things1"></span>
+				</p>
+			</div>
+			<div class="dateForm" data-role="fieldcontain">
+			   <label for="cate_value_goon" class="select">询问：</label>
+			   <select id="cate_value_goon"></select>
+				<div><button data-role="none" class="begin" id="submitGoOnAsk"><em>继续问</em></button></div>
+			</div>
+		</div>
+	</div>
+</div>
+<div data-role="page" id="wait">
+	<div data-role="header" class="infoHeader"><i id="skip" class="smb">跳过</i><s></s></div>
+	<div data-role="none" class="cont">
+		<p><span class="waitt"><s></s></span><strong>稍等，结果马上知晓</strong></p>
+	</div>
+</div>
+<div data-role="none">
+	<div id="overlay" class="bgDiv"></div>
+	<div class="bgCont modal">
+		<strong>请选择您的出生日期来确定您的属相</strong>
+	</div>
+	<div class="bgCont2 modal">
+		<strong>输入您要创建的用户名：</strong>
+		<input type="text" id="profile_value" placeholder="在此输入您的用户名" data-role="none" class="birthday" /><br />
+		例：李连杰<br />
+		<button data-role="none" class="begin btn" id="createProfile"><em>确定</em></button>
+	</div>
+</div>
+</body>
+</html>
