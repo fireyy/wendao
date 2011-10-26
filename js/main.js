@@ -1,6 +1,5 @@
 var BASEURL = "http://m.wolftankk.com:8080/",
 UPDATE_URL = BASEURL + "upgrade",
-GETDATA = "api/getData.html",
 WEATHER_URL = BASEURL+"getWeatherByGPS",
 USERID = 0,
 CID = 0,
