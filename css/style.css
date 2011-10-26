@@ -23,8 +23,8 @@ body {background: #000 url(../images/body.jpg) no-repeat center 45px;-webkit-use
 #info .cont {padding: 15px 10px 0;}
 #info p,#userlist p {text-shadow:0 -1px 0 #000,-1px 0 0 #000,0 1px 0 #000,1px 0 0 #000,0 -2px 0 #000,-2px 0 0 #000,0 2px 0 #000,2px 0 0 #000,0 -3px 0 #000,-3px 0 0 #000,0 3px 0 #000,3px 0 0 #000;color:#fff;margin:0 auto 10px;text-indent: 10px;}
 #info ul {overflow:hidden;padding: 10;}
-#info ul li {width:65px;height:65px;float:left;margin: 5px;background:url(../images/i1.png) no-repeat;text-indent:-999em;position:relative;}
-#info ul li.selected:before { content: "";width:61px;height:61px;display:block;position:absolute;left:0;top:0;border:2px solid #00bad0;border-radius:10px; }
+#info ul li {width:57px;height:57px;float:left;margin: 8px;background:url(../images/i1.png) no-repeat;text-indent:-999em;position:relative;}
+#info ul li.selected:before { content: "";width:53px;height:53px;display:block;position:absolute;left:0;top:0;border:2px solid #00bad0;border-radius:10px; }
 #info ul li.i2 {background-image: url(../images/i2.png);}
 #info ul li.i3 {background-image: url(../images/i3.png);}
 #info ul li.i4 {background-image: url(../images/i4.png);}
@@ -55,6 +55,7 @@ body {background: #000 url(../images/body.jpg) no-repeat center 45px;-webkit-use
 #wait .cont p .waitt {display:inline-block;width:220px;height:220px;background: url(../images/sq.png);}
 #wait .cont p .waitt s {display:block;background: url(../images/sq_a.png);width:220px;height:220px;}
 #wait .cont p strong {display:block;color:#e1e1e1;text-shadow:0 -1px 0 #000,-1px 0 0 #000,0 1px 0 #000,1px 0 0 #000;font-weight:100;}
+#stopSpin {}
 
 .onToday {margin:0 10px;border-radius:4px;border:2px solid #000;-webkit-box-shadow:inset rgba(255,255,255,.3) 0 0 2px;box-shadow:inset rgba(255,255,255,.3) 0 0 2px;background-color:#141414;position:relative;top:14px;padding:10px 8px 0;}
 .onTodayP {text-shadow:none;color:#888;line-height:2;padding-left:10px;}
@@ -70,8 +71,8 @@ body {background: #000 url(../images/body.jpg) no-repeat center 45px;-webkit-use
 .dateToday td {border:1px solid #303030;height:32px;text-align:center;line-height:32px;color:#cacaca;font-weight:700;}
 .dateToday .days {color:#fff200;}
 .todayThingsP {padding:0 10px 0 15px;line-height:1.5;}
-.text-things {height:115px;overflow-y:auto;overflow-x:hidden;display:block;-webkit-overflow-scrolling: touch;/*overflow-y: scroll;*/}
-.todayThingsP strong {color:#fff;margin:20px 0 8px;display:block;}
+.text-things {height:115px;overflow-y:auto;overflow-x:hidden;display:block;-webkit-overflow-scrolling: touch;font-size:18px;/*overflow-y: scroll;*/}
+.todayThingsP strong {color:#fff;margin:20px 0 8px;display:block;font-size:18px;}
 .dateForm {text-align:center;}
 .dateForm .select {color:#c3c3c3;white-space:nowrap;}
 #submitAsk,#submitGoOnAsk {padding:0 30px;margin-top:10px;}
@@ -102,6 +103,7 @@ body {background: #000 url(../images/body.jpg) no-repeat center 45px;-webkit-use
 .edit #dataSubmit {display:none;}
 .edit #editUname {display:inline-block;}
 
+/*.spinStop {-webkit-transition: -webkit-transform 1s linear;}*/
 /*.spin {-webkit-transform:rotate(360deg);-webkit-animation-name:spin;-webkit-animation-duration:1s;-webkit-animation-iteration-count:infinite;-webkit-animation-timing-function:linear;}
 @-webkit-keyframes spin{
     from {-webkit-transform:rotate(0deg)}

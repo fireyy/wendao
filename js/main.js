@@ -326,7 +326,8 @@ function initEventHalder () {
     $("#dataSubmit").bind(EVENTER,submitPesData);
     $("#submitAsk").bind(EVENTER,startAsk);
     $("#submitGoOnAsk").bind(EVENTER,goOnAsk);
-    $("#skip").bind(EVENTER,skipWait);
+//    $("#skip").bind(EVENTER,skipWait);
+	$("#stopSpin").bind(EVENTER,skipWait);
     $("#dataEdit").bind(EVENTER,saveEdit);
     $("#editu").bind(EVENTER,function(e){
 	    preventBehavior(e);
@@ -388,16 +389,19 @@ function returnToUserlist () {
 
 //跳过演算动画
 function skipWait () {
-    if(waitDelay) clearTimeout(waitDelay);
+    //if(waitDelay) clearTimeout(waitDelay);
     gotoResult();
 }
 
 //显示演算结果
 function gotoResult () {
-    $("#skip").hide();
+    //$("#skip").hide();
     //去除演算动画
-    $("#wait .waitt s").removeClass("spin");
-    $.mobile.changePage( $("#goOnask"), { transition: "none", changeHash: false } );
+    //$("#wait .waitt s").removeClass("spin");
+	$("#wait .waitt s").css("webkitAnimationPlayState","paused");
+	setTimeout(function(){
+		$.mobile.changePage( $("#goOnask"), { transition: "none", changeHash: false } )
+	},1000);
 }
 
 function saveEdit (e){
@@ -659,6 +663,7 @@ function goOnAsk (e) {
 //查询事项，获得结果
 function submitAskData () {
     $("#wait .waitt s").addClass("spin");
+	$("#wait .waitt s").css("webkitAnimationPlayState","running");
     $.mobile.changePage( $("#wait"), { transition: "none", changeHash: false } );
     var sx = $("#sxv").val();
     
@@ -714,8 +719,8 @@ function submitAskData () {
         ],
         function(){
             if(resid) saveToUse(cate, resid, day, sx);
-            $("#skip").show();
-            waitDelay = setTimeout(gotoResult, 3000);
+            //$("#skip").show();
+            //waitDelay = setTimeout(gotoResult, 3000);
         },
         function(error, failingQuery){ //Failure
             _alert("Error: " + error.message);
