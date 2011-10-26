@@ -1,5 +1,5 @@
 var BASEURL = "http://m.wolftankk.com:8080/",
-UPDATE_URL = "api/update.html",
+UPDATE_URL = BASEURL + "upgrade",
 GETDATA = "api/getData.html",
 WEATHER_URL = BASEURL+"getWeatherByGPS",
 USERID = 0,
@@ -87,10 +87,10 @@ function chkExistTable () {
     html5sql.process(
         [
             {
-                sql: "SELECT max(id) as id FROM hauldata;",
+                sql: "SELECT max(updatetime) as updatetime FROM hauldata;",
                 data: [],
                 success: function(tx, data){
-                    window.localStorage.setItem("lastid", data.rows.item(0).id);
+                    window.localStorage.setItem("lastid", data.rows.item(0).updatetime);
                 }
             }
         ],
@@ -139,39 +139,50 @@ function initUserDB () {
 //检查是否有数据更新，如果有则更新本地数据库
 function updateLocalData () {
     var lastid = window.localStorage.getItem("lastid");
-    $.ajax({
-        url: UPDATE_URL,
-        data: "id="+lastid,
-        dataType: 'json',
-        xhrFields: {
-            withCredentials: true
-        },
-        success: function(data){
-            if(data.update == 1){
-                $.ajax({
-                    url: GETDATA,
-                    data: "id="+lastid,
-                    dataType: 'json',
-                    xhrFields: {
-                        withCredentials: true
-                    },
-                    success: function(data){
-                        html5sql.process(
-                            data,
-                            function(){ //Success
-                                initLocalUser();
-                            },
-                            function(error, failingQuery){ //Failure
-                                _alert("Error: " + error.message);
-                            }
-                        );
-                    }
-                });
-            }else{
-                initLocalUser();
-            }
-        }
-    });
+	var num = 0,startNum = 0,limitNum = 10;
+	var execThree = function(){
+		$.ajax({
+			url: UPDATE_URL,
+			data: "lastupdate="+lastid+"&start="+startNum+"&limit="+limitNum,
+			dataType: 'json',
+			xhrFields: {
+				withCredentials: true
+			},
+			timeout: 10000,
+			error: function(){
+				if (num < 3)
+				{
+					num++;
+					execThree();
+				}else{
+					initLocalUser();
+				}
+			},
+			success: function(data){
+				if("totalCount" in data){
+					var ht = [];
+					for (var i=0;i<data.Data.length ; i++ )
+					{
+						ht.push("INSERT INTO `hauldata` (`id`, `catid`, `borntag`, `day`, `randomId`, `title`, `brief`, `content`, `updatetime`, `enable`) VALUES (",data.Data[i].id,",",data.Data[i].catid,", ",data.Data[i].borntag,", ",data.Data[i].day,", ",data.Data[i].randomId,", '",data.Data[i].title,"', '",data.Data[i].brief,"', '",data.Data[i].content,"', ",data.Data[i].updatetime,", ,",data.Data[i].enable,");");
+					}
+					html5sql.process(
+						ht.join(""),
+						function(){ //Success
+							initLocalUser();
+							startNum += limitNum;
+							execThree();
+						},
+						function(error, failingQuery){ //Failure
+							_alert("Error: " + error.message);
+						}
+					);						
+				}else{
+					initLocalUser();
+				}
+			}
+		});
+	}
+	execThree();
 }
 
 function getBorn (id) {
