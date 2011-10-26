@@ -6,6 +6,7 @@ USERID = 0,
 CID = 0,
 EDIT = 0,
 USERLIST = 0,
+BIRDAY = new Date(1990, 4, 10, 7, 20),
 EVENTER = (debug) ? "click" : "touchstart";
 
 var deviceInfo = function() {
@@ -299,13 +300,15 @@ function initEventHalder () {
     $(".i13").bind(EVENTER,function(e){
         preventBehavior(e);
         var cb = function(date) {
-		    var ld = new LunarDate(date);
-		    $(".i"+ld.aYearId).tap();
+	        BIRDAY = date;
+		    var lll = new lunarDate();
+			var ld = lll.ganzhi(date);
+		    $(".i"+(ld.aid+1)).touchstart();
 		    $(".bgCont").hide();
 		    //alert(ld.aYear+ld.aYearId);
         };
         plugins.datePicker.show({
-			date: "5/10/1990",
+			date: BIRDAY,
 			mode: "date",
 			allowOldDates: true
 		}, cb);
@@ -612,16 +615,18 @@ function getLuckyData (sx) {
 //更新公历和农历时间显示
 function setLunar () {
     var dt = new Date();
-    var ld = new LunarDate(dt);
+    var lll = new lunarDate();
+	var ld = lll.ganzhi(dt);
+	var rd = lll.toLunarDate(dt);
     var y = dt.getFullYear();
     var m = dt.getMonth()+1;
     var d = dt.getDate();
     m = (m < 10) ? "0" + m : m;
     d = (d < 10) ? "0" + d : d;
-    $("#lunarDate").html('<em class="years">'+y+'</em>，农历：<em class="nongl">'+ld.lYear+'年</em><em class="animals">['+ld.aYear+'年]</em> <em class="nongl">'+ld.lMonth+'月'+ld.lDay+'</em>');
+    $("#lunarDate").html('<em class="years">'+y+'</em>，农历：<em class="nongl">'+ld.y+'年</em><em class="animals">['+ld.animal+'年]</em> <em class="nongl">'+rd.toString()+'</em>');
     $("#today_m").html(m);
     $("#today_d").html(d);
-    $("#ask_lunar").html('<em class="years">'+y+'-'+m+'-'+d+'</em>，<em class="nongl">'+ld.lYear+'年</em><em class="animals">['+ld.aYear+'年]</em> <em class="nongl">'+ld.lMonth+'月'+ld.lDay+'</em>');
+    $("#ask_lunar").html('<em class="years">'+y+'-'+m+'-'+d+'</em>，<em class="nongl">'+ld.y+'年</em><em class="animals">['+ld.animal+'年]</em> <em class="nongl">'+rd.toString()+'</em>');
     //document.write(ld.lYear + "（" + ld.aYear + "）年" + ld.lMonth + "月" + ld.lDay + ld.lHour + "时");
 }
 

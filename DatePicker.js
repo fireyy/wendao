@@ -15,9 +15,9 @@ if (typeof PhoneGap !== "undefined") {
      * show - true to show the ad, false to hide the ad
      */
     DatePicker.prototype.show = function(options, cb) {
-        /*if (options.date) {
+        if (options.date) {
             options.date = (options.date.getMonth()+1)+"/"+(options.date.getDate())+"/"+(options.date.getFullYear());
-        }*/
+        }
         var defaults = {
             mode: '',
             date: '',
