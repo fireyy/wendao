@@ -594,7 +594,7 @@ function getLuckyData (sx) {
                         }
                         arr.push("<option value='",data.rows.item(i).categoryId,"'>",data.rows.item(i).name,"</option>");
                     };
-                    $("#cate_value").html(arr.join(""));
+                    $("#select-choice-1").html(arr.join(""));
                 }
             }
         ],
@@ -678,7 +678,7 @@ function submitAskData () {
         var rand = rander();
         var day = getMonthDate();
     }
-    var sel = (askType == 0) ? "#cate_value" : "#cate_value_goon";
+    var sel = (askType == 0) ? "#select-choice-1" : "#cate_value_goon";
     var cate = $(sel).val();
     CID = cate;
     var resid = chkToUse(cate, day, sx), sql, data;
