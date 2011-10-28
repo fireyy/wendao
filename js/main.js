@@ -1,5 +1,5 @@
-//var BASEURL = "http://m.wolftankk.com:8080/",
-var BASEURL = 'http://172.16.130.142:8080/',
+var BASEURL = "http://m.wolftankk.com:8080/",
+//var BASEURL = 'http://172.16.130.142:8080/',
 UPDATE_URL = BASEURL + "upgrade",
 WEATHER_URL = BASEURL+"getWeatherByGPS",
 USERID = 0,
