@@ -9,12 +9,12 @@
 			var y = document.getElementById("year").value;
 			var m = document.getElementById("month").value;
 			var d = document.getElementById("day").value;
-			var dt = new Date(y, (m-1), d, 7, 20); // 注意第二个参数月的范围是 [0, 11]
+			var dt = new Date(y, (m-1), d);
 			var lll = new lunarDate();
 			var ld = lll.ganzhi(dt);
 			var rd = lll.toLunarDate(dt);
 			document.getElementById("lunar").innerHTML = rd.toString();
-			document.getElementById("sx").innerHTML = ld.animal+" "+ld.aid;
+			document.getElementById("sx").innerHTML = ld.animal+" "+ld.aid+" "+ld.jie;
 		}
 	</script>
 </head>
