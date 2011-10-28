@@ -1,5 +1,5 @@
 //var BASEURL = "http://m.wolftankk.com:8080/",
-var BASEURL = 'http://172.16.130.142:8080',
+var BASEURL = 'http://172.16.130.142:8080/',
 UPDATE_URL = BASEURL + "upgrade",
 WEATHER_URL = BASEURL+"getWeatherByGPS",
 USERID = 0,
@@ -164,7 +164,7 @@ function updateLocalData () {
 					var ht = [];
 					for (var i=0;i<data.Data.length ; i++ )
 					{
-						ht.push("INSERT INTO `hauldata` (`id`, `catid`, `borntag`, `day`, `randomId`, `title`, `brief`, `content`, `updatetime`, `enable`) VALUES (",data.Data[i].id,",",data.Data[i].catid,", ",data.Data[i].borntag,", ",data.Data[i].day,", ",data.Data[i].randomId,", '",data.Data[i].title,"', '",data.Data[i].brief,"', '",data.Data[i].content,"', ",data.Data[i].updatetime,", ,",data.Data[i].enable,");");
+						ht.push("INSERT INTO `hauldata` (`id`, `catid`, `borntag`, `day`, `randomId`, `title`, `brief`, `content`, `updatetime`, `enable`) VALUES (",data.Data[i].id,",",data.Data[i].catid,", ",data.Data[i].borntag,", ",data.Data[i].day,", ",data.Data[i].randomId,", '",data.Data[i].title,"', '",data.Data[i].brief,"', '",data.Data[i].content,"', ",data.Data[i].updatetime,", ",data.Data[i].enable,");");
 					}
 					html5sql.process(
 						ht.join(""),
@@ -398,7 +398,7 @@ function skipWait () {
 
 //显示演算结果
 function gotoResult () {
-    //$("#skip").hide();
+    $("#stopSpin").hide();
     //去除演算动画
     //$("#wait .waitt s").removeClass("spin");
 	$("#wait .waitt s").css("webkitAnimationPlayState","paused");
@@ -724,7 +724,7 @@ function submitAskData () {
         ],
         function(){
             if(resid) saveToUse(cate, resid, day, sx);
-            //$("#skip").show();
+            $("#stopSpin").show();
             //waitDelay = setTimeout(gotoResult, 3000);
         },
         function(error, failingQuery){ //Failure
