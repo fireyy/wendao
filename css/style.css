@@ -102,6 +102,7 @@ body {background: #000 url(../images/body.jpg) no-repeat center 45px;-webkit-use
 .cont .ui-field-contain {padding: 15px 0;border-bottom: none;}
 .begin:active,.smb:active {-webkit-box-shadow:inset rgba(255,255,255,.3) 0 0 3px,rgba(0,0,0,1) 0 0 1px, inset rgba(0,0,0,0.7) 0 0 10px;box-shadow:inset rgba(255,255,255,.3) 0 0 3px,rgba(0,0,0,1) 0 0 1px, inset rgba(0,0,0,0.5) 0 2px 15px, inset rgba(0,0,0,0.3) 0 -15px 20px;line-height:40px;}
 .smb:active {line-height:26px;}
+.btn:active {line-height:30px;}
 #dataEdit,#editUname {display:none;}
 .edit #dataEdit {display:inline-block;}
 .edit #dataSubmit {display:none;}

@@ -1,6 +1,6 @@
 var BASEURL = "http://m.wolftankk.com:8080/",
 //var BASEURL = 'http://172.16.130.142:8080/',
-UPDATE_URL = BASEURL + "upgrade",
+UPDATE_URL = BASEURL + "exportData",
 WEATHER_URL = BASEURL+"getWeatherByGPS",
 USERID = 0,
 CID = 0,
@@ -46,6 +46,7 @@ function checkConnection() {
         return true;
     }
 }
+
 
 //通过gps检测用户所在区域
 function checkLocation(){
