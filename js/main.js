@@ -399,7 +399,7 @@ function skipWait () {
 
 //显示演算结果
 function gotoResult () {
-    $("#stopSpin").hide();
+    $("#stopSpin").css("visibility","hidden");
     //去除演算动画
     //$("#wait .waitt s").removeClass("spin");
 	$("#wait .waitt s").css("webkitAnimationPlayState","paused");
@@ -725,7 +725,7 @@ function submitAskData () {
         ],
         function(){
             if(resid) saveToUse(cate, resid, day, sx);
-            $("#stopSpin").show();
+            $("#stopSpin").css("visibility","visible");
             //waitDelay = setTimeout(gotoResult, 3000);
         },
         function(error, failingQuery){ //Failure
