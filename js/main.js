@@ -62,6 +62,10 @@ function checkLocation(){
             url: WEATHER_URL,
             data: "lat="+lati+"&lng="+longi,
             dataType: 'json',
+            timeout: 10000,
+            error: function(){
+               $("#weatherData").html('<strong>未获取到天气数据</strong>');
+            },
             success: function(data){
 	           if("weatherinfo" in data){
 		           var temp = data.weatherinfo.temp1.split("~");
@@ -187,7 +191,8 @@ function updateLocalData () {
 			}
 		});
 	}
-	execThree();
+	//execThree();
+    initLocalUser();
 }
 
 function getBorn (id) {
