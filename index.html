@@ -7,7 +7,7 @@
 	<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" charset="utf-8">
 	<link rel="stylesheet" type="text/css" href="css/jquery.mobile.css" />
 	<script type="text/javascript">
-		var debug = (navigator.platform.indexOf("iPhone") < 0 && navigator.platform.indexOf("iPod") < 0 && navigator.platform.indexOf("iPad") < 0), tester = 0, dayluck = '1', waitDelay = null, askType = 0, DBver = 3;
+		var debug = (navigator.platform.indexOf("iPhone") < 0 && navigator.platform.indexOf("iPod") < 0 && navigator.platform.indexOf("iPad") < 0), tester = 0, dayluck = '1', waitDelay = null, askType = 0, DBver = 4;
 	</script>
 	<script type="text/javascript" charset="utf-8" src="phonegap-1.1.0.js"></script>
 	<script type="text/javascript" charset="utf-8" src="DatePicker.js"></script>
@@ -97,9 +97,9 @@
 	</div>
 </div>
 <div data-role="page" id="wait">
-	<div data-role="header" class="infoHeader"><!-- <i id="skip" class="smb">跳过</i> --><s></s></div>
+	<div data-role="header" class="infoHeader"><s></s></div>
 	<div data-role="none" class="cont">
-		<p><span class="waitt"><s></s></span><!-- <strong>稍等，结果马上知晓</strong> --><br /><button data-role="none" class="begin" id="stopSpin"><em>停止</em></button></p>
+		<p><span class="waitt"><s></s></span><br /><button data-role="none" class="begin" id="stopSpin"><em>停止</em></button></p>
 	</div>
 </div>
 <div data-role="none">

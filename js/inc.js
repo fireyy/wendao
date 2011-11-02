@@ -214,7 +214,7 @@ function _alert (message, alertCallback, title, buttonName) {
     if(debug){
         alert(message);
     }else{
-        navigator.notification.alert(message, callback, t, b);
+        navigator.notification.alert(message, callback, t, "确定");
     }
 }
 
@@ -226,7 +226,7 @@ function _confirm (message, alertCallback, title, buttonName) {
         v = (v) ? 1 : 2;
         callback(v);
     }else{
-        navigator.notification.confirm(message, callback, t, b);
+        navigator.notification.confirm(message, callback, t, "确定,取消");
     }
 }
 

@@ -7,6 +7,7 @@ CID = 0,
 EDIT = 0,
 USERLIST = 0,
 LIMIT_NUM = 200,
+isResume = false,
 BIRDAY = new Date(1990, 4, 10, 7, 20),
 EVENTER = (debug) ? "click" : "touchstart";
 
@@ -202,7 +203,12 @@ function getBorn (id) {
 
 function initLocalUser () {
     checkLocation();
-    checkUserList();
+    if(!isResume) {
+	    checkUserList();
+    }else{
+	    isResume = false;
+	    $.mobile.changePage( $("#userlist"), { transition: "none", changeHash: false } );
+    }
 }
 
 function hideSplash () {
@@ -293,7 +299,12 @@ function deleteUser (e) {
 
 //初始化时注册必需的tap事件
 function initEventHalder () {
-	//alert("event");
+	//当程序从后台返回的时候，执行
+	document.addEventListener("resume", function(){
+		isResume = true;
+		chkExistTable();
+	    //returnToUserlist();
+    }, false);
     $(".shengxiao li:not(.i13,.i14)").bind(EVENTER,function(e){
         preventBehavior(e);
         if($(this).hasClass("selected")){
@@ -407,8 +418,10 @@ function skipWait () {
 //显示演算结果
 function gotoResult () {
     $("#stopSpin").css("visibility","hidden");
-    //去除演算动画
-    //$("#wait .waitt s").removeClass("spin");
+    //var sz2 = document.getElementById("sz2");
+    //sz2.pause();
+    //sz2.currentTime = 0;
+    //停止演算动画
 	$("#wait .waitt s").css("webkitAnimationPlayState","paused");
 	setTimeout(function(){
 		$.mobile.changePage( $("#goOnask"), { transition: "none", changeHash: false } )
@@ -678,6 +691,7 @@ function submitAskData () {
     $("#wait .waitt s").addClass("spin");
 	$("#wait .waitt s").css("webkitAnimationPlayState","running");
     $.mobile.changePage( $("#wait"), { transition: "none", changeHash: false } );
+    //document.getElementById("sz2").play();
     var sx = $("#sxv").val();
     
     if(tester){
