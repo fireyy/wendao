@@ -100,6 +100,8 @@ function chkExistTable () {
         function(){
             if(checkConnection()) {
                 updateLocalData();
+            }else{
+	            initLocalUser();
             }
         },
         function(error, failingQuery){ //Failure
@@ -193,7 +195,6 @@ function getBorn (id) {
 	return arr[(id-1)];
 }
 
-//隐藏loading界面
 function initLocalUser () {
     checkLocation();
     checkUserList();

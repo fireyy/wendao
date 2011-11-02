@@ -39,19 +39,16 @@ body {background: #000 url(../images/body.jpg) no-repeat center 45px;-webkit-use
 #info ul li.i13 {background-image: url(../images/i13.png);}
 #info ul li.i14 {width:auto;text-indent:0;background:none;color:#9d9fa0;text-shadow:none;padding-top:20px;height:45px;}
 #info span {display:block;clear:both;text-align:center;}
-.begin {border:2px solid #000;border-radius:4px;background-color:#943779;background-image:-webkit-gradient(linear,left top,left bottom,from(#6C2757),color-stop(47%,#471137),color-stop(47%,#37061C),to(#2E0322));background-image:-webkit-linear-gradient(top,#C0515C,#9C313C 47%, #812F39 47%,#6C1E34);padding:0 35px;height:40px;/*-webkit-box-shadow:inset rgba(255,255,255,.3) 0 0 3px,rgba(0,0,0,1) 0 0 1px;box-shadow:inset rgba(255,255,255,.3) 0 0 3px,rgba(0,0,0,1) 0 0 1px;*/-webkit-box-shadow:inset rgba(255,255,255,1) 0 0 1px;}
+.begin {border:2px solid #000;border-radius:4px;background-color:#943779;background-image:-webkit-gradient(linear,left top,left bottom,from(#6C2757),color-stop(47%,#471137),color-stop(47%,#37061C),to(#2E0322));background-image:-webkit-linear-gradient(top,#C0515C,#9C313C 47%, #812F39 47%,#6C1E34);padding:0 35px;height:40px;-webkit-box-shadow:inset rgba(255,255,255,1) 0 0 1px;box-shadow:inset rgba(255,255,255,1) 0 0 1px;}
 .begin em {font-size: 18px;text-shadow: #000 1px 0 3px, #000 0 1px 3px, #000 0 -1px 3px, #000 -1px 0 3px;color: #eee;}
 .bgDiv {display:none;background-color:#000;opacity:0.6;position:absolute;right:0;bottom:0;left:0;top:0;width:100%;height:100%;z-index:999;}
-/*
-.modal_bak {display:none;width:230px;border-radius:6px;position:absolute;left:50%;top:0;margin:110px 0 0 -135px;border:1px solid rgba(0,0,0,.8);-webkit-box-shadow:inset rgba(255,255,255,.3) 0 0 3px;box-shadow:inset rgba(255,255,255,.3) 0 0 3px;background-image: -webkit-gradient(linear,0 0, 0 100%,from(rgba(255,255,255,0.3)),color-stop(65%,rgba(255,255,255,0.05)),to(rgba(255,255,255,0)));background-image: -webkit-radial-gradient(50% -60%, circle, rgba(255,255,255,0.4),rgba(255,255,255,0.05) 65%,rgba(255,255,255,0) 65%,rgba(255,255,255,0));background-image:-webkit-linear-gradinet(255,255,255,.6);text-shadow:none;color:#848484;padding:0 15px 20px 15px;}
-*/
 .modal {display:none;width:230px;border-radius:6px;position:absolute;left:50%;top:0;margin:100px 0 0 -135px;border:1px solid rgba(0,0,0,.8);-webkit-box-shadow:inset rgba(255,255,255,.3) 0 0 3px;padding:0 15px 20px 15px;text-shadow:none;background-color:rgba(33,33,33,.7);background-image:-webkit-radial-gradient(50% -60%,circle,rgba(255,255,255,.4),rgba(255,255,255,0.05) 65%,rgba(255,255,255,0) 65%,rgba(255,255,255,0));z-index:1000;}
 
 .modal strong {color:#fff;display:block;font-size:14px;margin:22px 0 12px;}
 .birthday {height:32px;margin:0;padding:0 0 0 10px;border:none;width:225px;margin-bottom:22px;background-color:#fff;background-image:-webkit-gradient(linear,0 0,0 100%,from(#888),color-stop(10%, #eee),to(#fff));background-image:-webkit-linear-gradient(top,#888,#eee 10%,#fff);}
 .birthday::-webkit-input-placeholder { color:#848484; }
 .modal:before {background:url(../images/topline.png) no-repeat;width:263px;height:57px;content:"";position:absolute;left:-4px;top:-5px;}
-.btn {height:30px;margin:25px 0 0 -40px;position:relative;left:50%;/*background-image:-webkit-gradient(linear,left top,left bottom,from(#4d8692),color-stop(47%,#2e535a),color-stop(48%,#1c4248),to(#052830));background-image:-webkit-linear-gradient(top,#4d8692,#2e535a 47%, #1c4248 48%,#052830);*/background-image:-webkit-gradient(linear,left top,left bottom,from(#6C2757),color-stop(47%,#471137),color-stop(47%,#37061C),to(#2E0322));background-image:-webkit-linear-gradient(top,#C0515C,#9C313C 47%, #812F39 47%,#6C1E34);padding: 0 25px;}
+.btn {height:30px;margin:25px 0 0 -40px;position:relative;left:50%;background-image:-webkit-gradient(linear,left top,left bottom,from(#6C2757),color-stop(47%,#471137),color-stop(47%,#37061C),to(#2E0322));background-image:-webkit-linear-gradient(top,#C0515C,#9C313C 47%, #812F39 47%,#6C1E34);padding: 0 25px;}
 .btn em {font-size:14px;font-weight:700;}
 
 #wait .cont {display:table;width:100%;}
@@ -71,7 +68,7 @@ body {background: #000 url(../images/body.jpg) no-repeat center 45px;-webkit-use
 .nongl {color:#ffc333;}
 .animals {color:#ff64b1;margin-left:5px;}
 .todayThings {background-color:#1F1A17;border:1px solid #787062;text-shadow:none;margin:0;color:#ccc;padding:3px 3px 10px;background: #000 url(../images/bgToday.jpg) no-repeat;}
-.dateToday {/*border:1px solid #303030;background-color:#010101;background-image:-webkit-gradient(linear,0 0,0 100%,from(#2D2C2C),to(#010101));border-collapse:collapse;border-spacing:0;*/width:100%;background-color:rgba(21,21,21,1);}
+.dateToday {width:100%;background-color:rgba(21,21,21,1);}
 .dateToday td {border:1px solid rgba(177,99,99,.8);height:32px;text-align:center;line-height:32px;color:#cacaca;font-weight:700;background-image:-webkit-linear-gradient(top,#B35454,#6E2431);background-image:-webkit-gradient(linear,0 0,0 100%,from(#B35454),to(#6E2431));}
 .dateToday .days {color:#fff200;}
 .todayThingsP {padding:0 10px 0 15px;line-height:1.5;}
@@ -108,7 +105,6 @@ body {background: #000 url(../images/body.jpg) no-repeat center 45px;-webkit-use
 .edit #dataSubmit {display:none;}
 .edit #editUname {display:inline-block;}
 
-/*.spinStop {-webkit-transition: -webkit-transform 1s linear;}*/
 /*.spin {-webkit-transform:rotate(360deg);-webkit-animation-name:spin;-webkit-animation-duration:1s;-webkit-animation-iteration-count:infinite;-webkit-animation-timing-function:linear;}
 @-webkit-keyframes spin{
     from {-webkit-transform:rotate(0deg)}
