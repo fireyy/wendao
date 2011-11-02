@@ -6,6 +6,7 @@ USERID = 0,
 CID = 0,
 EDIT = 0,
 USERLIST = 0,
+LIMIT_NUM = 200,
 BIRDAY = new Date(1990, 4, 10, 7, 20),
 EVENTER = (debug) ? "click" : "touchstart";
 
@@ -141,7 +142,7 @@ function initUserDB () {
 //检查是否有数据更新，如果有则更新本地数据库
 function updateLocalData () {
     var lastid = window.localStorage.getItem("lastid");
-	var num = 0,startNum = 0,limitNum = 10;
+	var num = 0,startNum = 0,limitNum = LIMIT_NUM;
 	var execThree = function(){
 		$.ajax({
 			url: UPDATE_URL,
