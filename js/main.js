@@ -336,7 +336,7 @@ function initEventHalder () {
     });
     $("#overlay").bind(EVENTER,function(e){
         preventBehavior(e);
-        $(".modal,#overlay").hide();
+        exitProfileDiv();
     });
     $("#r2info").bind(EVENTER,returnToInfo);
     $("#r2ask").bind(EVENTER,returnToAsk);
@@ -348,7 +348,6 @@ function initEventHalder () {
     $("#dataSubmit").bind(EVENTER,submitPesData);
     $("#submitAsk").bind(EVENTER,startAsk);
     $("#submitGoOnAsk").bind(EVENTER,goOnAsk);
-//    $("#skip").bind(EVENTER,skipWait);
 	$("#stopSpin").bind(EVENTER,skipWait);
     $("#dataEdit").bind(EVENTER,saveEdit);
     $("#editu").bind(EVENTER,function(e){
@@ -459,6 +458,17 @@ function saveEdit (e){
 	}
 }
 
+//隐藏ios的软键盘
+function hideKeyboard () {
+	document.activeElement.blur();
+	$("input").blur();
+}
+
+function exitProfileDiv () {
+	hideKeyboard();
+	$("#overlay,.bgCont2").hide();
+}
+
 function saveProfileName (e) {
 	preventBehavior(e);
 	var p = $("#profile_value").val();
@@ -484,7 +494,7 @@ function saveProfileName (e) {
 					if(USERID == 0){
 						createNewProfile();
 					}else{
-						$("#overlay,.bgCont2").hide();
+						exitProfileDiv();
 					}
                 }
             },
@@ -527,7 +537,8 @@ function createNewProfile () {
     			window.localStorage.removeItem("cate_"+sx+"_0"+"_"+CID);
     			window.localStorage.setItem("expiry_"+sx+"_"+USERID,e);
     			window.localStorage.setItem("cate_"+sx+"_"+USERID+"_"+CID,c);
-                $("#overlay,.bgCont2").hide();
+    			$("#createNew").hide();
+    			exitProfileDiv();
             },
             function(error, failingQuery){ //Failure
                 _alert("Error: " + error.message);

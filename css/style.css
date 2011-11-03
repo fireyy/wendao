@@ -45,7 +45,7 @@ body {background: #000 url(../images/body.jpg) no-repeat center 45px;-webkit-use
 .modal {display:none;width:230px;border-radius:6px;position:absolute;left:50%;top:0;margin:100px 0 0 -135px;border:1px solid rgba(0,0,0,.8);-webkit-box-shadow:inset rgba(255,255,255,.3) 0 0 3px;padding:0 15px 20px 15px;text-shadow:none;background-color:rgba(33,33,33,.7);background-image:-webkit-radial-gradient(50% -60%,circle,rgba(255,255,255,.4),rgba(255,255,255,0.05) 65%,rgba(255,255,255,0) 65%,rgba(255,255,255,0));z-index:1000;}
 
 .modal strong {color:#fff;display:block;font-size:14px;margin:22px 0 12px;}
-.birthday {height:32px;margin:0;padding:0 0 0 10px;border:none;width:225px;margin-bottom:22px;background-color:#fff;background-image:-webkit-gradient(linear,0 0,0 100%,from(#888),color-stop(10%, #eee),to(#fff));background-image:-webkit-linear-gradient(top,#888,#eee 10%,#fff);}
+.birthday {height:32px;margin:0;padding:0 0 0 10px;border:none;width:225px;margin-bottom:5px;background-color:#fff;background-image:-webkit-gradient(linear,0 0,0 100%,from(#888),color-stop(10%, #eee),to(#fff));background-image:-webkit-linear-gradient(top,#888,#eee 10%,#fff);}
 .birthday::-webkit-input-placeholder { color:#848484; }
 .modal:before {background:url(../images/topline.png) no-repeat;width:263px;height:57px;content:"";position:absolute;left:-4px;top:-5px;}
 .btn {height:30px;margin:25px 0 0 -40px;position:relative;left:50%;background-image:-webkit-gradient(linear,left top,left bottom,from(#6C2757),color-stop(47%,#471137),color-stop(47%,#37061C),to(#2E0322));background-image:-webkit-linear-gradient(top,#C0515C,#9C313C 47%, #812F39 47%,#6C1E34);padding: 0 25px;}

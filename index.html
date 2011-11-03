@@ -7,7 +7,7 @@
 	<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" charset="utf-8">
 	<link rel="stylesheet" type="text/css" href="css/jquery.mobile.css" />
 	<script type="text/javascript">
-		var debug = (navigator.platform.indexOf("iPhone") < 0 && navigator.platform.indexOf("iPod") < 0 && navigator.platform.indexOf("iPad") < 0), tester = 0, dayluck = '1', waitDelay = null, askType = 0, DBver = 4;
+		var debug = (navigator.platform.indexOf("iPhone") < 0 && navigator.platform.indexOf("iPod") < 0 && navigator.platform.indexOf("iPad") < 0), tester = 0, dayluck = '1', waitDelay = null, askType = 0, DBver = 5;
 	</script>
 	<script type="text/javascript" charset="utf-8" src="phonegap-1.1.0.js"></script>
 	<script type="text/javascript" charset="utf-8" src="DatePicker.js"></script>
@@ -109,8 +109,7 @@
 	</div>
 	<div class="bgCont2 modal">
 		<strong>输入您要创建的用户名：</strong>
-		<input type="text" id="profile_value" placeholder="在此输入您的用户名" data-role="none" class="birthday" /><br />
-		例：李连杰<br />
+		<input type="text" id="profile_value" placeholder="在此输入您的用户名" data-role="none" class="birthday" autocorrect="off" autocapitalize="off" />
 		<button data-role="none" class="begin btn" id="createProfile"><em>确定</em></button>
 	</div>
 </div>
