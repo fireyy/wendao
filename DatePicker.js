@@ -21,6 +21,7 @@ if (typeof PhoneGap !== "undefined") {
         var defaults = {
             mode: '',
             date: '',
+            title: '',
             allowOldDates: true
         }
         for (var key in defaults) {
@@ -36,13 +37,48 @@ if (typeof PhoneGap !== "undefined") {
         if (this._callback)
             this._callback(d);
     }
+    
+    function Prompt() {
+	
+	}
+	
+	Prompt.prototype.show = function(title, val, okCallback, cancelCallback, okButtonTitle, cancelButtonTitle) { 
+	
+	    var defaults = {
+	        title : title,
+	        val : val,
+	        okButtonTitle : (okButtonTitle || "Ok"),
+	        cancelButtonTitle : (cancelButtonTitle || "Cancel")
+	    };
+	
+	    var key = 'f' + this.callbackIdx++;
+	    window.plugins.Prompt.callbackMap[key] = {
+	        okCallback: function(msg) {
+	            if (okCallback && typeof okCallback === 'function') {
+	                okCallback(msg);
+	            }
+	            delete window.plugins.Prompt.callbackMap[key];
+	        },
+	        cancelCallback: function() {
+	            if (cancelCallback && typeof cancelCallback === 'function') {
+	                cancelCallback();
+	            }
+	            delete window.plugins.Prompt.callbackMap[key];
+	        }
+	    };
+	    var callback = 'window.plugins.Prompt.callbackMap.' + key;
+	    PhoneGap.exec("Prompt.show", callback, defaults);
+	};
+	
+	Prompt.prototype.callbackMap = {};
+	Prompt.prototype.callbackIdx = 0;
+	
+	PhoneGap.addConstructor(function() {
+	    if(!window.plugins) {
+	        window.plugins = {};
+	    }
+	    window.plugins.datePicker = new DatePicker();
+	    window.plugins.Prompt = new Prompt();
+	});
 
-
-    PhoneGap.addConstructor(function() {
-        if(!window.plugins)
-        {
-            window.plugins = {};
-        }
-        window.plugins.datePicker = new DatePicker();
-    });
 };

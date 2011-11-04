@@ -323,15 +323,14 @@ function initEventHalder () {
 		    var lll = new lunarDate();
 			var ld = lll.ganzhi(date);
 		    $(".i"+(ld.aid+1)).touchstart();
-		    $(".bgCont").hide();
 		    //alert(ld.aYear+ld.aYearId);
         };
         plugins.datePicker.show({
 			date: BIRDAY,
 			mode: "date",
+			title: "请选择您的出生日期来确定您的属相",
 			allowOldDates: true
 		}, cb);
-        $(".bgCont").show();
 
     });
     $("#overlay").bind(EVENTER,function(e){
@@ -342,7 +341,19 @@ function initEventHalder () {
     $("#r2ask").bind(EVENTER,returnToAsk);
     $("#createNew,#editUname").bind(EVENTER,function(e){
 	    preventBehavior(e);
-		$("#overlay,.bgCont2").show();
+	    var val = $("#profile_value").val() || "";
+	    window.plugins.Prompt.show(
+	        "输入您要创建的用户名",
+	        val,
+	        function (userText) {
+		        $("#profile_value").val(userText);
+		        saveProfileName();
+	        },
+	        function () {},
+	        "Ok",
+	        "Cancel"
+	    );
+		//$("#overlay,.bgCont2").show();
     });
     $("#createProfile").bind(EVENTER,saveProfileName);
     $("#dataSubmit").bind(EVENTER,submitPesData);
@@ -371,6 +382,7 @@ function initEventHalder () {
 	    if(EDIT == 1) return ;
 	    USERLIST = 0;
 	    $("#sxv").val("");
+	    $("#profile_value").val("");
 	   	$("#createNew").show();
 	    $("#info .selected").removeClass("selected");
     	$.mobile.changePage( $("#info"), { transition: "slide", changeHash: false } );
