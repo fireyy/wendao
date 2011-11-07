@@ -168,8 +168,12 @@ function updateLocalData () {
 					initLocalUser();
 				}
 			},
-			success: function(data){
+			success: function(data){		
 				if("totalCount" in data){
+					if (startNum == 0)
+					{
+						deleteDatas();
+					}
 					var ht = [];
 					for (var i=0;i<data.Data.length ; i++ )
 					{
@@ -192,8 +196,21 @@ function updateLocalData () {
 			}
 		});
 	}
-	//execThree();
-    initLocalUser();
+	execThree();
+    //initLocalUser();
+}
+
+
+function deleteDatas () {
+    html5sql.process(
+        "DELETE FROM hauldata;",
+        function(){ //Success
+			//_alert("Error: " + error.message);
+        },
+        function(error, failingQuery){ //Failure
+            _alert("Error: " + error.message);
+        }
+    );
 }
 
 function getBorn (id) {
