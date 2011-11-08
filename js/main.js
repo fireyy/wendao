@@ -49,43 +49,6 @@ function checkConnection() {
     }
 }
 
-
-//通过gps检测用户所在区域
-function checkLocation(){
-    
-    if(debug) return true;
-    
-    var onSuccess = function(position){
-        var lati = position.coords.latitude;
-        var longi = position.coords.longitude;
-        //alert(lati);
-        $.ajax({
-            url: WEATHER_URL,
-            data: "lat="+lati+"&lng="+longi,
-            dataType: 'json',
-            timeout: 10000,
-            error: function(){
-               $("#weatherData").html('<strong>未获取到天气数据</strong>');
-            },
-            success: function(data){
-	           if("weatherinfo" in data){
-		           var temp = data.weatherinfo.temp1.split("~");
-               	   $("#weatherData").html('<strong>'+data.weatherinfo.city+'</strong><em class="tq">'+data.weatherinfo.weather1+'</em><em class="t1">'+temp[0]+'</em>/<em class="t2">'+temp[1]+'</em>');
-	           }else{
-		           $("#weatherData").html('<strong>未获取到天气数据</strong>');
-	           }
-            }
-        });
-    };
-    
-    var onError = function(error){
-        //_alert('code: '+error.code+'\n'+'message: '+error.message);
-        $("#weatherData").html('<strong>定位服务未开启，未能获得天气状况</strong>');
-    };
-    
-    navigator.geolocation.getCurrentPosition(onSuccess, onError);
-}
-
 //检测是否本地数据库是否已经存在，不存在则创建
 function chkExistTable () {
     if(DBver != window.localStorage.getItem("DBver")){
@@ -196,8 +159,8 @@ function updateLocalData () {
 			}
 		});
 	}
-	execThree();
-    //initLocalUser();
+	//execThree();
+    initLocalUser();
 }
 
 
@@ -219,7 +182,6 @@ function getBorn (id) {
 }
 
 function initLocalUser () {
-    checkLocation();
     if(!isResume) {
 	    checkUserList();
     }else{
@@ -280,7 +242,7 @@ function selectUser (e){
 		$("#info .selected").removeClass("selected");
 		$(".i"+sx).addClass("selected");
 		$("#profile_value").val(name);
-		$.mobile.changePage( $("#info"), { transition: "slide", changeHash: false } );
+		$.mobile.changePage( $("#info"), { changeHash: false } );
 	}else{
 		$("#createNew").hide();
 		USERLIST = 1;
@@ -350,10 +312,6 @@ function initEventHalder () {
 		}, cb);
 
     });
-    $("#overlay").bind(EVENTER,function(e){
-        preventBehavior(e);
-        exitProfileDiv();
-    });
     $("#r2info").bind(EVENTER,returnToInfo);
     $("#r2ask").bind(EVENTER,returnToAsk);
     $("#createNew,#editUname").bind(EVENTER,function(e){
@@ -398,11 +356,12 @@ function initEventHalder () {
 	    preventBehavior(e);
 	    if(EDIT == 1) return ;
 	    USERLIST = 0;
+	    USERID = 0;
 	    $("#sxv").val("");
 	    $("#profile_value").val("");
 	   	$("#createNew").show();
 	    $("#info .selected").removeClass("selected");
-    	$.mobile.changePage( $("#info"), { transition: "slide", changeHash: false } );
+    	$.mobile.changePage( $("#info"), { changeHash: false } );
     });
     $("#r2userlist").bind(EVENTER,function(e){
 	    preventBehavior(e);
@@ -421,20 +380,20 @@ function init () {
 function returnToInfo (e) {
     preventBehavior(e);
     if(USERLIST == 1){
-	    $.mobile.changePage( $("#userlist"), { transition: "slide", reverse : true, changeHash: false } );
+	    $.mobile.changePage( $("#userlist"), { reverse : true, changeHash: false } );
     }else{
-	    $.mobile.changePage( $("#info"), { transition: "slide", reverse : true, changeHash: false } );
+	    $.mobile.changePage( $("#info"), { reverse : true, changeHash: false } );
     }
 }
 
 //返回问询页面
 function returnToAsk (e) {
     preventBehavior(e);
-    $.mobile.changePage( $("#ask"), { transition: "slide", reverse : true, changeHash: false } );
+    $.mobile.changePage( $("#ask"), { reverse : true, changeHash: false } );
 }
 
 function returnToUserlist () {
-	$.mobile.changePage( $("#userlist"), { transition: "slide", reverse : true, changeHash: false } );
+	$.mobile.changePage( $("#userlist"), { reverse : true, changeHash: false } );
 }
 
 //跳过演算动画
@@ -494,14 +453,19 @@ function hideKeyboard () {
 }
 
 function exitProfileDiv () {
-	hideKeyboard();
-	$("#overlay,.bgCont2").hide();
+	//hideKeyboard();
+	//$("#overlay,.bgCont2").hide();
 }
 
-function saveProfileName (e) {
-	preventBehavior(e);
+function saveProfileName () {
+	//preventBehavior(e);
 	var p = $("#profile_value").val();
 	if(p != ""){
+		var len = $("#profile_list").find("li").length;
+		if(len > 5){
+			_alert("您只能创建5个用户，请移除不需要的用户，再创建新用户");
+			return ;
+		}
 		var id = 0;
 		html5sql.process(
             [
@@ -520,6 +484,7 @@ function saveProfileName (e) {
                 if(id != 0) {
 	                _alert("用户名已经存在，请重新输入");
                 }else{
+	                alert(USERID);
 					if(USERID == 0){
 						createNewProfile();
 					}else{
@@ -574,20 +539,6 @@ function createNewProfile () {
             }
         );
 	}
-}
-
-//判断用户输入的年份是否正确，然后获得生肖
-function getBornTag (e) {
-    preventBehavior(e);
-    var birthday = $("#birthday_value").val();
-    //开头不能为0的四位数字
-    if(/^[1-9][0-9]{3}$/.test(birthday)){
-        var s = getshengxiao(birthday);
-        $(".i"+s).tap();
-        $("#overlay,.bgCont").hide();
-    }else{
-        _alert("年份输入有误，请重新输入");
-    }
 }
 
 function disabledBtn(id){
@@ -663,7 +614,7 @@ function getLuckyData (sx) {
         function(){
             if(resid) saveToUse(dayluck, resid, day, sx);
             setLunar();
-            $.mobile.changePage( $("#ask"), { transition: "slide", changeHash: false } );
+            $.mobile.changePage( $("#ask"), { changeHash: false } );
             enabledBtn("#dataSubmit");
         },
         function(error, failingQuery){ //Failure
@@ -684,9 +635,7 @@ function setLunar () {
     var d = dt.getDate();
     m = (m < 10) ? "0" + m : m;
     d = (d < 10) ? "0" + d : d;
-    $("#lunarDate").html('<em class="years">'+y+'</em>，农历：<em class="nongl">'+ld.y+'年</em><em class="animals">['+ld.animal+'年]</em> <em class="nongl">'+rd.toString()+'</em>');
-    $("#today_m").html(m);
-    $("#today_d").html(d);
+    $("#lunarDate").html('<em class="years">'+y+'-'+m+'-'+d+'</em>，<em class="nongl">'+ld.y+'年</em><em class="animals">['+ld.animal+'年]</em> <em class="nongl">'+rd.toString()+'</em>');
     $("#ask_lunar").html('<em class="years">'+y+'-'+m+'-'+d+'</em>，<em class="nongl">'+ld.y+'年</em><em class="animals">['+ld.animal+'年]</em> <em class="nongl">'+rd.toString()+'</em>');
     //document.write(ld.lYear + "（" + ld.aYear + "）年" + ld.lMonth + "月" + ld.lDay + ld.lHour + "时");
 }
@@ -694,7 +643,7 @@ function setLunar () {
 //判断用户今天是否询问过此事项
 function chkToUse (cid, today, sx) {
 	if(window.localStorage.getItem("expiry_"+sx+"_"+USERID) != today){
-	    window.localStorage.clear();
+	    window.localStorage.removeItem("cate_"+sx+"_"+USERID+"_"+cid);
 	    return false;
 	}
 	return window.localStorage.getItem("cate_"+sx+"_"+USERID+"_"+cid);
@@ -820,9 +769,10 @@ if(debug){
     }, false);
 }
 $(document).bind("mobileinit", function(){
-    //$.mobile.useFastClick = false;
     $.mobile.loadingMessage = false;
-    //$.mobile.allowCrossDomainPages = true;
-    //$.mobile.touchOverflowEnabled = true; //启用原生滚动支持，会出现按钮无法点击的bug
-    $.mobile.hashListeningEnabled = false;
+    $.mobile.defaultPageTransition = "slide";
+    $.mobile.hashListeningEnabled = true;
+    $.mobile.pushStateEnabled = false;
+    $.mobile.ajaxEnabled = false;
+    $.mobile.defaultDialogTransition = "none";
 });
