@@ -46,7 +46,7 @@ body {background: #000 url(../images/body.jpg) no-repeat center 45px;-webkit-use
 
 #wait .cont {display:table;width:100%;}
 #wait .cont p {display:table-cell;height:415px;text-align:center;vertical-align:middle;}
-#wait .cont p .waitt {display:inline-block;width:220px;height:220px;background: url(../images/sq.png);}
+#wait .cont p .waitt {display:block;width:220px;height:220px;background: url(../images/sq.png);margin: 0 auto;}
 #wait .cont p .waitt s {display:block;background: url(../images/sq_a.png);width:15px;height:87px;position:relative;top:67px;left:103px;}
 #wait .cont p strong {display:block;color:#e1e1e1;text-shadow:0 -1px 0 #000,-1px 0 0 #000,0 1px 0 #000,1px 0 0 #000;font-weight:100;}
 #stopSpin {position:relative;top:45px;}

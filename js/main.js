@@ -1,32 +1,11 @@
-var BASEURL = "http://m.wolftankk.com:8080/",
-//var BASEURL = 'http://172.16.130.142:8080/',
-UPDATE_URL = BASEURL + "upgrade",
-WEATHER_URL = BASEURL+"getWeatherByGPS",
-USERID = 0,
-CID = 0,
-EDIT = 0,
-USERLIST = 0,
-LIMIT_NUM = 200,
-isResume = false,
-BIRDAY = new Date(1990, 4, 10, 7, 20),
-EVENTER = (debug) ? "click" : "touchstart";
+var UPDATE_URL = "http://m.wolftankk.com:8080/upgrade", USERID = 0, CID = 0, EDIT = 0, USERLIST = 0, LIMIT_NUM = 200, BIRDAY = new Date(1990, 4, 10, 7, 20), EVENTER = (debug) ? "click" : "vmousedown";
 
-var deviceInfo = function() {
-    document.getElementById("platform").innerHTML = device.platform;
-    document.getElementById("version").innerHTML = device.version;
-    document.getElementById("uuid").innerHTML = device.uuid;
-    document.getElementById("name").innerHTML = device.name;
-    document.getElementById("width").innerHTML = screen.width;
-    document.getElementById("height").innerHTML = screen.height;
-    document.getElementById("colorDepth").innerHTML = screen.colorDepth;
-};
-
-var preventBehavior = function(e) {
+var preventBehavior = function (e) {
     e.preventDefault();
 };
 
 //检测用户的网络链接情况
-function checkConnection() {
+function checkConnection () {
 
     if(debug) return true;
 
@@ -182,12 +161,7 @@ function getBorn (id) {
 }
 
 function initLocalUser () {
-    if(!isResume) {
-	    checkUserList();
-    }else{
-	    isResume = false;
-	    $.mobile.changePage( $("#userlist"), { transition: "none", changeHash: false } );
-    }
+	checkUserList();
 }
 
 function hideSplash () {
@@ -278,12 +252,6 @@ function deleteUser (e) {
 
 //初始化时注册必需的tap事件
 function initEventHalder () {
-	//当程序从后台返回的时候，执行
-	document.addEventListener("resume", function(){
-		isResume = true;
-		chkExistTable();
-	    //returnToUserlist();
-    }, false);
     $(".shengxiao li:not(.i13,.i14)").bind(EVENTER,function(e){
         preventBehavior(e);
         if($(this).hasClass("selected")){
@@ -301,8 +269,10 @@ function initEventHalder () {
 	        BIRDAY = date;
 		    var lll = new lunarDate();
 			var ld = lll.ganzhi(date);
-		    $(".i"+(ld.aid+1)).touchstart();
-		    //alert(ld.aYear+ld.aYearId);
+			var obj = $(".i"+(ld.aid+1));
+			$("#sxv").val(obj.attr("rev"));
+            $(".shengxiao li.selected").removeClass("selected");
+            obj.addClass("selected");
         };
         plugins.datePicker.show({
 			date: BIRDAY,
@@ -484,7 +454,6 @@ function saveProfileName () {
                 if(id != 0) {
 	                _alert("用户名已经存在，请重新输入");
                 }else{
-	                alert(USERID);
 					if(USERID == 0){
 						createNewProfile();
 					}else{
