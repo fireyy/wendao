@@ -7,7 +7,7 @@
 	<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" charset="utf-8">
 	<link rel="stylesheet" type="text/css" href="css/jquery.mobile.css" />
 	<script type="text/javascript">
-		var debug = (navigator.platform.indexOf("iPhone") < 0 && navigator.platform.indexOf("iPod") < 0 && navigator.platform.indexOf("iPad") < 0), tester = 0, dayluck = '1', waitDelay = null, askType = 0, DBver = 8;
+		var debug = (navigator.platform.indexOf("iPhone") < 0 && navigator.platform.indexOf("iPod") < 0 && navigator.platform.indexOf("iPad") < 0), tester = 0, dayluck = '1', askType = 0, DBver = 8, userDBver = 1;
 	</script>
 	<script type="text/javascript" charset="utf-8" src="phonegap-1.1.0.js"></script>
 	<script type="text/javascript" charset="utf-8" src="DatePicker.js"></script>
@@ -32,24 +32,16 @@
 <div data-role="page" id="info">
 	<div data-role="header" class="infoHeader"><i id="r2userlist" class="smb">返回</i><i id="editUname" class="smb">修改用户名</i><s></s></div>
 	<div data-role="none" class="cont">
-		<h3>选择属相</h3>
+		<h3>选择性别</h3>
 		<input type="hidden" id="sxv" value="" />
+		<input type="hidden" id="gender" value="" />
 		<ul class="shengxiao">
-			<li class="i1" rev="1">鼠</li>
-			<li class="i2" rev="2">牛</li>
-			<li class="i3" rev="3">虎</li>
-			<li class="i4" rev="4">兔</li>
-			<li class="i5" rev="5">龙</li>
-			<li class="i6" rev="6">蛇</li>
-			<li class="i7" rev="7">马</li>
-			<li class="i8" rev="8">羊</li>
-			<li class="i9" rev="9">猴</li>
-			<li class="i10" rev="10">鸡</li>
-			<li class="i11" rev="11">狗</li>
-			<li class="i12" rev="12">猪</li>
-			<li class="i13" rev="13">问号</li>
+			<li class="i0" rev="0">男</li>
+			<li class="i1" rev="1">女</li>
 		</ul>
-		<span><button class="begin" id="dataSubmit" data-role="none"><em>开　始</em></button><button class="begin" id="dataEdit" data-role="none"><em>保　存</em></button></span>
+		<h3>输入生日</h3>
+		<p><input type="date" id="birthday" class="birthday" value="" /></p>
+		<p class="submit_area"><button class="begin" id="dataSubmit" data-role="none"><em>开　始</em></button><button class="begin" id="dataEdit" data-role="none"><em>保　存</em></button></p>
 	</div>
 </div>
 <div id="ask" data-role="page">

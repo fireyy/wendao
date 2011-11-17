@@ -79,6 +79,7 @@ function initUserDB () {
         html5sql.process(
             sql,
             function(){ //Success
+	            window.localStorage.setItem("userDBver",userDBver);
                 checkUserList();
             },
             function(error, failingQuery){ //Failure
@@ -173,7 +174,10 @@ function hideSplash () {
 }
 
 function checkUserList () {
-	
+	if(userDBver != window.localStorage.getItem("userDBver")){
+        initUserDB();
+        return ;
+    }
     html5sql.process(
         [
             {
@@ -184,7 +188,7 @@ function checkUserList () {
                     if(len > 0){
 	                    USERLIST = 1;
 	                    for (var i = 0; i < len; i++) {
-                            arr.push('<li id="user_'+data.rows.item(i).userId+'" rev="'+data.rows.item(i).borntag+'" uid="'+data.rows.item(i).userId+'"><a class="username"><i>'+data.rows.item(i).name+'</i><span class="ui-li-count">属相：'+getBorn(data.rows.item(i).borntag)+'</span></a><a class="delete">ddd</a></li>');
+                            arr.push('<li id="user_'+data.rows.item(i).userId+'" rev="'+data.rows.item(i).borntag+'" uid="'+data.rows.item(i).userId+'" gender="'+data.rows.item(i).gender+'"><a class="username"><i>'+data.rows.item(i).name+'</i><span class="ui-li-count">性别：'+getBorn(data.rows.item(i).gender)+'</span></a><a class="delete">ddd</a></li>');
                         };
                         $("#profile_list").prepend(arr.join(""));
                         $("#profile_list .username").bind(EVENTER, selectUser);
@@ -210,8 +214,10 @@ function selectUser (e){
 	preventBehavior(e);
 	var sx = $(this).parents("li").attr("rev");
 	var name = $(this).find("i").text();
+	var gender = $(this).parents("li").attr("gender");
 	USERID = $(this).parents("li").attr("uid");
 	$("#sxv").val(sx);
+	$("#gender").val(gender);
 	if(EDIT == 1){
 		$("#info .selected").removeClass("selected");
 		$(".i"+sx).addClass("selected");
@@ -220,7 +226,7 @@ function selectUser (e){
 	}else{
 		$("#createNew").hide();
 		USERLIST = 1;
-		getLuckyData(sx);
+		getLuckyData(sx, gender);
 	}
 }
 
@@ -252,34 +258,34 @@ function deleteUser (e) {
 
 //初始化时注册必需的tap事件
 function initEventHalder () {
-    $(".shengxiao li:not(.i13,.i14)").bind(EVENTER,function(e){
+    $(".shengxiao li").bind(EVENTER,function(e){
         preventBehavior(e);
         if($(this).hasClass("selected")){
-            $("#sxv").val("");
+            $("#gender").val("");
             $(this).removeClass("selected");
         }else{
-            $("#sxv").val($(this).attr("rev"));
+            $("#gender").val($(this).attr("rev"));
             $(".shengxiao li.selected").removeClass("selected");
             $(this).addClass("selected");
         }
     });
-    $(".i13").bind(EVENTER,function(e){
-        preventBehavior(e);
-        var cb = function(date) {
-	        BIRDAY = date;
-		    var lll = new lunarDate();
-			var ld = lll.ganzhi(date);
-			var obj = $(".i"+(ld.aid+1));
-			$("#sxv").val(obj.attr("rev"));
-            $(".shengxiao li.selected").removeClass("selected");
-            obj.addClass("selected");
-        };
-        plugins.datePicker.show({
-			date: BIRDAY,
-			mode: "date",
-			title: "请选择您的出生日期来确定您的属相",
-			allowOldDates: true
-		}, cb);
+    $("#birthday").bind(EVENTER,function(e){
+        //preventBehavior(e);
+        this.blur();
+        if(!debug){
+	        var cb = function(date) {
+		        BIRDAY = date;
+			    var lll = new lunarDate();
+				var ld = lll.ganzhi(date);
+				$("#sxv").val(ld.aid+1);
+	        };
+	        plugins.datePicker.show({
+				date: BIRDAY,
+				mode: "date",
+				title: "请选择您的出生日期来确定您的属相",
+				allowOldDates: true
+			}, cb);
+        }
 
     });
     $("#r2info").bind(EVENTER,returnToInfo);
@@ -304,7 +310,7 @@ function initEventHalder () {
     $("#dataSubmit").bind(EVENTER,submitPesData);
     $("#submitAsk").bind(EVENTER,startAsk);
     $("#submitGoOnAsk").bind(EVENTER,goOnAsk);
-	$("#stopSpin").bind(EVENTER,skipWait);
+	$("#stopSpin").bind(EVENTER,gotoResult);
     $("#dataEdit").bind(EVENTER,saveEdit);
     $("#editu").bind(EVENTER,function(e){
 	    preventBehavior(e);
@@ -366,18 +372,10 @@ function returnToUserlist () {
 	$.mobile.changePage( $("#userlist"), { reverse : true, changeHash: false } );
 }
 
-//跳过演算动画
-function skipWait () {
-    //if(waitDelay) clearTimeout(waitDelay);
-    gotoResult();
-}
-
 //显示演算结果
-function gotoResult () {
+function gotoResult (e) {
+	preventBehavior(e);
     $("#stopSpin").css("visibility","hidden");
-    //var sz2 = document.getElementById("sz2");
-    //sz2.pause();
-    //sz2.currentTime = 0;
     //停止演算动画
 	$("#wait .waitt s").css("webkitAnimationPlayState","paused");
 	setTimeout(function(){
@@ -390,21 +388,24 @@ function saveEdit (e){
 	var uid = USERID;
 	var old_name = $("#user_"+uid).find(".username i").text();
 	var old_sx = $("#user_"+uid).attr("rev");
+	var old_gender = $("#user_"+uid).attr("gender");
 	var name = $("#profile_value").val();
 	var sx = $("#sxv").val();
-	if(old_sx != sx || old_name != name){
+	var gender = $("#gender").val();
+	if(old_sx != sx || old_name != name || old_gender != gender){
 		html5sql.process(
 	        [
 	            {
-	                "sql": "UPDATE user SET name = ?, borntag = ? WHERE userId = ?;",
-	                data: [name,sx,uid],
+	                "sql": "UPDATE user SET name = ?, borntag = ?, gender = ? WHERE userId = ?;",
+	                data: [name,sx,gender,uid],
 	                success: function(){}
 	            }
 	        ],
 	        function(){
 		        $("#user_"+uid).find(".username i").text(name);
-		        $("#user_"+uid).find(".ui-li-count").text("属相："+getBorn(sx));
+		        $("#user_"+uid).find(".ui-li-count").text("性别："+getBorn(gender));
 		        $("#user_"+uid).attr("rev",sx);
+		        $("#user_"+uid).attr("gender",gender);
 	            returnToUserlist();
 	        },
 	        function(error, failingQuery){ //Failure
@@ -474,11 +475,12 @@ function saveProfileName () {
 function createNewProfile () {
 	var p = $("#profile_value").val();
 	var sx = $("#sxv").val();
+	var gender = $("#gender").val();
 	if(p != ""){
 		html5sql.process(
             [
                 {
-                    "sql": "INSERT INTO user (name, borntag) VALUES (?,?);",
+                    "sql": "INSERT INTO user (name, borntag, gender) VALUES (?,?,?);",
                     data: [p,sx],
                     success: function(){}
                 },
@@ -491,15 +493,15 @@ function createNewProfile () {
                 }
             ],
             function(){
-                //getLuckyData(sx);
+                //getLuckyData(sx, gender);
                 $("#profile_list").find("li:not('.add')").remove();
                 checkUserList();
-                var e = window.localStorage.getItem("expiry_"+sx+"_0");
-    			var c = window.localStorage.setItem("cate_"+sx+"_0"+"_"+CID);
-    			window.localStorage.removeItem("expiry_"+sx+"_0");
-    			window.localStorage.removeItem("cate_"+sx+"_0"+"_"+CID);
-    			window.localStorage.setItem("expiry_"+sx+"_"+USERID,e);
-    			window.localStorage.setItem("cate_"+sx+"_"+USERID+"_"+CID,c);
+                var e = window.localStorage.getItem("expiry_"+sx+"_"+gender+"_0");
+    			var c = window.localStorage.setItem("cate_"+sx+"_"+gender+"_0"+"_"+CID);
+    			window.localStorage.removeItem("expiry_"+sx+"_"+gender+"_0");
+    			window.localStorage.removeItem("cate_"+sx+"_"+gender+"_0"+"_"+CID);
+    			window.localStorage.setItem("expiry_"+sx+"_"+gender+"_"+USERID,e);
+    			window.localStorage.setItem("cate_"+sx+"_"+gender+"_"+USERID+"_"+CID,c);
     			$("#createNew").hide();
     			exitProfileDiv();
             },
@@ -522,18 +524,30 @@ function enabledBtn(id){
 function submitPesData (e) {
     preventBehavior(e);
     disabledBtn("#dataSubmit");
+    if(debug){
+	    var date = $("#birthday").val();
+	    if(date != ""){
+		    date = date.split("-");
+		    date = new Date(date[0],date[1],date[2]);
+		    BIRDAY = date;
+			var lll = new lunarDate();
+			var ld = lll.ganzhi(date);
+			$("#sxv").val(ld.aid+1);
+	    }
+    }
     var sx = $("#sxv").val();
-    var p = $("#profile_value").val();
-    if(sx != ""){
-	    getLuckyData(sx);
+    var gender = $("#gender").val();
+    //var p = $("#profile_value").val();
+    if(sx != "" && gender != ""){
+	    getLuckyData(sx, gender);
 
     }else{
         enabledBtn("#dataSubmit");
-        _alert("请先选择您的生肖，如果不清楚，请点击问号图标。");
+        _alert("请选择性别并输入生日信息。");
     }
 }
 
-function getLuckyData (sx) {
+function getLuckyData (sx, gender) {
 	if(tester){
         var rand = rander();
         var day = '1';
@@ -541,14 +555,13 @@ function getLuckyData (sx) {
         var day = getMonthDate();
         var rand = rander();
     }
-    
-    var resid = chkToUse(dayluck, day, sx), sql, data;
+    var resid = chkToUse(dayluck, day, sx, gender), sql, data;
     if(resid) {
         sql = "SELECT * FROM hauldata WHERE id = ? LIMIT 1;";
         data = [resid];
     }else{
-        sql = "SELECT * FROM hauldata WHERE borntag = ? AND day = ? AND randomId = ? AND catid = ? LIMIT 1;";
-        data = [sx,day,rand,dayluck];
+        sql = "SELECT * FROM hauldata WHERE borntag = ? AND day = ? AND randomId = ? AND catid = ? AND gender = ? LIMIT 1;";
+        data = [sx,day,rand,dayluck,gender];
     }
     html5sql.process(
         [
@@ -581,7 +594,7 @@ function getLuckyData (sx) {
             }
         ],
         function(){
-            if(resid) saveToUse(dayluck, resid, day, sx);
+            if(resid) saveToUse(dayluck, resid, day, sx, gender);
             setLunar();
             $.mobile.changePage( $("#ask"), { changeHash: false } );
             enabledBtn("#dataSubmit");
@@ -610,19 +623,19 @@ function setLunar () {
 }
 
 //判断用户今天是否询问过此事项
-function chkToUse (cid, today, sx) {
-	if(window.localStorage.getItem("expiry_"+sx+"_"+USERID) != today){
-	    window.localStorage.removeItem("cate_"+sx+"_"+USERID+"_"+cid);
+function chkToUse (cid, today, sx, gender) {
+	if(window.localStorage.getItem("expiry_"+sx+"_"+gender+"_"+USERID) != today){
+	    window.localStorage.removeItem("cate_"+sx+"_"+gender+"_"+USERID+"_"+cid);
 	    return false;
 	}
-	return window.localStorage.getItem("cate_"+sx+"_"+USERID+"_"+cid);
+	return window.localStorage.getItem("cate_"+sx+"_"+gender+"_"+USERID+"_"+cid);
 }
 
 //保存用户的问询结果，保证一天内一个事项对应同一个结果
 //**cid=分类id,id=结果id,today=今天的时间
-function saveToUse (cid,id, today, sx) {
-    window.localStorage.setItem("expiry_"+sx+"_"+USERID, today);
-    window.localStorage.setItem("cate_"+sx+"_"+USERID+"_"+cid, id);
+function saveToUse (cid,id, today, sx, gender) {
+    window.localStorage.setItem("expiry_"+sx+"_"+gender+"_"+USERID, today);
+    window.localStorage.setItem("cate_"+sx+"_"+gender+"_"+USERID+"_"+cid, id);
 }
 
 //清除用户的过期问询记录
@@ -651,7 +664,7 @@ function submitAskData () {
     $.mobile.changePage( $("#wait"), { transition: "none", changeHash: false } );
     //document.getElementById("sz2").play();
     var sx = $("#sxv").val();
-    
+    var gender = $("#gender").val();
     if(tester){
         var rand = rander();
         var day = '1';
@@ -662,13 +675,13 @@ function submitAskData () {
     var sel = (askType == 0) ? "#select-choice-1" : "#cate_value_goon";
     var cate = $(sel).val();
     CID = cate;
-    var resid = chkToUse(cate, day, sx), sql, data;
+    var resid = chkToUse(cate, day, sx, gender), sql, data;
     if(resid) {
         sql = "SELECT * FROM hauldata WHERE id = ? LIMIT 1;";
         data = [resid];
     }else{
-        sql = "SELECT * FROM hauldata WHERE borntag = ? AND day = ? AND randomId = ? AND catid = ? LIMIT 1;";
-        data = [sx,day,rand,cate];
+        sql = "SELECT * FROM hauldata WHERE borntag = ? AND day = ? AND randomId = ? AND catid = ? AND gender = ? LIMIT 1;";
+        data = [sx,day,rand,cate,gender];
     }
     html5sql.process(
         [
@@ -703,9 +716,8 @@ function submitAskData () {
             }
         ],
         function(){
-            if(resid) saveToUse(cate, resid, day, sx);
+            if(resid) saveToUse(cate, resid, day, sx, gender);
             $("#stopSpin").css("visibility","visible");
-            //waitDelay = setTimeout(gotoResult, 3000);
         },
         function(error, failingQuery){ //Failure
             _alert("Error: " + error.message);
@@ -740,8 +752,9 @@ if(debug){
 $(document).bind("mobileinit", function(){
     $.mobile.loadingMessage = false;
     $.mobile.defaultPageTransition = "slide";
-    $.mobile.hashListeningEnabled = true;
+    $.mobile.hashListeningEnabled = false;
     $.mobile.pushStateEnabled = false;
     $.mobile.ajaxEnabled = false;
+    $.mobile.linkBindingEnabled = false;
     $.mobile.defaultDialogTransition = "none";
 });
