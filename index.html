@@ -7,7 +7,7 @@
 	<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" charset="utf-8">
 	<link rel="stylesheet" type="text/css" href="css/jquery.mobile.css" />
 	<script type="text/javascript">
-		var debug = (navigator.platform.indexOf("iPhone") < 0 && navigator.platform.indexOf("iPod") < 0 && navigator.platform.indexOf("iPad") < 0), tester = 0, dayluck = '1', askType = 0, DBver = 8, userDBver = 1;
+		var debug = (navigator.platform.indexOf("iPhone") < 0 && navigator.platform.indexOf("iPod") < 0 && navigator.platform.indexOf("iPad") < 0), tester = 0, dayluck = '1', askType = 0, DBver = 9, userDBver = 2;
 	</script>
 	<script type="text/javascript" charset="utf-8" src="phonegap-1.1.0.js"></script>
 	<script type="text/javascript" charset="utf-8" src="DatePicker.js"></script>
@@ -39,8 +39,8 @@
 			<li class="i0" rev="0">男</li>
 			<li class="i1" rev="1">女</li>
 		</ul>
-		<h3>输入生日</h3>
-		<p><input type="date" id="birthday" class="birthday" value="" /></p>
+		<h3>填写生日</h3>
+		<p><input type="button" id="birth" class="birthday" value="按此输入生日" data-role="none" /></p>
 		<p class="submit_area"><button class="begin" id="dataSubmit" data-role="none"><em>开　始</em></button><button class="begin" id="dataEdit" data-role="none"><em>保　存</em></button></p>
 	</div>
 </div>

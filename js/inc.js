@@ -245,3 +245,18 @@ function getMonthDate () {
     d = (d < 10) ? "0" + d : d;
     return y+""+m+""+d;
 }
+
+//获取yyyy-mm-dd日期格式
+function getBirthday (date) {
+    var y = date.getFullYear();
+    var m = date.getMonth()+1;
+    var d = date.getDate();
+    return y+"-"+m+"-"+d;
+}
+
+//获取new Date日期
+function getNewDate (date) {
+    date = date.split("-");
+	date = new Date(date[0],(date[1]-1),date[2]);
+    return date;
+}

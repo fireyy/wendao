@@ -157,8 +157,9 @@ function deleteDatas () {
 }
 
 function getBorn (id) {
-	var arr = ["鼠","牛","虎","兔","龙","蛇","马","羊","猴","鸡","狗","猪"];
-	return arr[(id-1)];
+	//var arr = ["鼠","牛","虎","兔","龙","蛇","马","羊","猴","鸡","狗","猪"];
+	var arr = ["男","女"];
+	return arr[id];
 }
 
 function initLocalUser () {
@@ -188,7 +189,7 @@ function checkUserList () {
                     if(len > 0){
 	                    USERLIST = 1;
 	                    for (var i = 0; i < len; i++) {
-                            arr.push('<li id="user_'+data.rows.item(i).userId+'" rev="'+data.rows.item(i).borntag+'" uid="'+data.rows.item(i).userId+'" gender="'+data.rows.item(i).gender+'"><a class="username"><i>'+data.rows.item(i).name+'</i><span class="ui-li-count">性别：'+getBorn(data.rows.item(i).gender)+'</span></a><a class="delete">ddd</a></li>');
+                            arr.push('<li id="user_'+data.rows.item(i).userId+'" rev="'+data.rows.item(i).borntag+'" uid="'+data.rows.item(i).userId+'" gender="'+data.rows.item(i).gender+'" birth="'+data.rows.item(i).birth+'"><a class="username"><i>'+data.rows.item(i).name+'</i><span class="ui-li-count">性别：'+getBorn(data.rows.item(i).gender)+'</span></a><a class="delete">ddd</a></li>');
                         };
                         $("#profile_list").prepend(arr.join(""));
                         $("#profile_list .username").bind(EVENTER, selectUser);
@@ -215,12 +216,15 @@ function selectUser (e){
 	var sx = $(this).parents("li").attr("rev");
 	var name = $(this).find("i").text();
 	var gender = $(this).parents("li").attr("gender");
+	var birth = $(this).parents("li").attr("birth");
 	USERID = $(this).parents("li").attr("uid");
+	BIRDAY = getNewDate(birth);
 	$("#sxv").val(sx);
 	$("#gender").val(gender);
+	$("#birth").val(birth);
 	if(EDIT == 1){
 		$("#info .selected").removeClass("selected");
-		$(".i"+sx).addClass("selected");
+		$(".i"+gender).addClass("selected");
 		$("#profile_value").val(name);
 		$.mobile.changePage( $("#info"), { changeHash: false } );
 	}else{
@@ -269,22 +273,27 @@ function initEventHalder () {
             $(this).addClass("selected");
         }
     });
-    $("#birthday").bind(EVENTER,function(e){
-        //preventBehavior(e);
-        this.blur();
+    $("#birth").bind(EVENTER,function(e){
+        preventBehavior(e);
+        var cb = function(date) {
+		    BIRDAY = date;
+		    $("#birth").val(getBirthday(date));
+			var lll = new lunarDate();
+			var ld = lll.ganzhi(date);
+			$("#sxv").val(ld.aid+1);
+	    };
         if(!debug){
-	        var cb = function(date) {
-		        BIRDAY = date;
-			    var lll = new lunarDate();
-				var ld = lll.ganzhi(date);
-				$("#sxv").val(ld.aid+1);
-	        };
 	        plugins.datePicker.show({
 				date: BIRDAY,
 				mode: "date",
-				title: "请选择您的出生日期来确定您的属相",
+				title: "请选择您的出生日期",
 				allowOldDates: true
 			}, cb);
+        }else{
+	        var date = prompt("请输入您的出生日期",getBirthday(BIRDAY));
+	        if(date){
+		        cb(getNewDate(date));
+	        }
         }
 
     });
@@ -335,6 +344,8 @@ function initEventHalder () {
 	    USERID = 0;
 	    $("#sxv").val("");
 	    $("#profile_value").val("");
+	    $("#birth").val("按此输入生日");
+	    BIRDAY = new Date(1990, 4, 10, 7, 20);
 	   	$("#createNew").show();
 	    $("#info .selected").removeClass("selected");
     	$.mobile.changePage( $("#info"), { changeHash: false } );
@@ -389,15 +400,17 @@ function saveEdit (e){
 	var old_name = $("#user_"+uid).find(".username i").text();
 	var old_sx = $("#user_"+uid).attr("rev");
 	var old_gender = $("#user_"+uid).attr("gender");
+	var old_birth = $("#user_"+uid).attr("birth");
 	var name = $("#profile_value").val();
 	var sx = $("#sxv").val();
 	var gender = $("#gender").val();
-	if(old_sx != sx || old_name != name || old_gender != gender){
+	var birth = $("#birth").val();
+	if(old_sx != sx || old_name != name || old_gender != gender || old_birth != birth){
 		html5sql.process(
 	        [
 	            {
-	                "sql": "UPDATE user SET name = ?, borntag = ?, gender = ? WHERE userId = ?;",
-	                data: [name,sx,gender,uid],
+	                "sql": "UPDATE user SET name = ?, borntag = ?, gender = ?, birth = ? WHERE userId = ?;",
+	                data: [name,sx,gender,birth,uid],
 	                success: function(){}
 	            }
 	        ],
@@ -406,6 +419,7 @@ function saveEdit (e){
 		        $("#user_"+uid).find(".ui-li-count").text("性别："+getBorn(gender));
 		        $("#user_"+uid).attr("rev",sx);
 		        $("#user_"+uid).attr("gender",gender);
+		        $("#user_"+uid).attr("birth",birth);
 	            returnToUserlist();
 	        },
 	        function(error, failingQuery){ //Failure
@@ -476,12 +490,13 @@ function createNewProfile () {
 	var p = $("#profile_value").val();
 	var sx = $("#sxv").val();
 	var gender = $("#gender").val();
+	var birth = $("#birth").val();
 	if(p != ""){
 		html5sql.process(
             [
                 {
-                    "sql": "INSERT INTO user (name, borntag, gender) VALUES (?,?,?);",
-                    data: [p,sx],
+                    "sql": "INSERT INTO user (name, borntag, gender, birth) VALUES (?,?,?,?);",
+                    data: [p,sx,gender,birth],
                     success: function(){}
                 },
                 {
@@ -524,17 +539,6 @@ function enabledBtn(id){
 function submitPesData (e) {
     preventBehavior(e);
     disabledBtn("#dataSubmit");
-    if(debug){
-	    var date = $("#birthday").val();
-	    if(date != ""){
-		    date = date.split("-");
-		    date = new Date(date[0],date[1],date[2]);
-		    BIRDAY = date;
-			var lll = new lunarDate();
-			var ld = lll.ganzhi(date);
-			$("#sxv").val(ld.aid+1);
-	    }
-    }
     var sx = $("#sxv").val();
     var gender = $("#gender").val();
     //var p = $("#profile_value").val();

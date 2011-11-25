@@ -30,8 +30,8 @@ body {background: #000 url(../images/body.jpg) no-repeat center 45px;-webkit-use
 #info ul li.selected:before { content: "";width:54px;height:54px;display:block;position:absolute;left:-2px;top:-2px;border:4px solid #fcff00;border-radius:10px;-webkit-box-shadow: inset rgba(0, 0, 0, 0.8) 0 10px 15px;box-shadow: inset rgba(0, 0, 0, 0.8) 0 10px 15px; }
 .begin {border:2px solid #000;border-radius:4px;background-color:#943779;background-image:-webkit-gradient(linear,left top,left bottom,from(#C0515C),color-stop(47%,#9C313C),color-stop(47%,#812F39),to(#6C1E34));background-image:-webkit-linear-gradient(top,#C0515C,#9C313C 47%, #812F39 47%,#6C1E34);padding:0 35px;height:40px;-webkit-box-shadow:inset rgba(255,255,255,1) 0 0 1px;box-shadow:inset rgba(255,255,255,1) 0 0 1px;}
 .begin em {font-size: 18px;text-shadow: #000 1px 0 3px, #000 0 1px 3px, #000 0 -1px 3px, #000 -1px 0 3px;color: #eee;}
-#info input.birthday {background: #fff !important;}
-#info .submit_area {padding-top: 20px;}
+#info .birthday {border:none;font-size: 16px;font-weight:bold;line-height: 50px;height:50px;width:100%;border:1px solid rgba(0,0,0,.8);-webkit-box-shadow:inset rgba(255,255,255,.8) 0 0 2px;box-shadow:inset rgba(255,255,255,.3) 0 0 2px;background-color:rgba(33,33,33,.7);color:#fff;border-radius: 4px;}
+#info .submit_area {padding-top: 136px;}
 
 #wait .cont {display:table;width:100%;}
 #wait .cont p {display:table-cell;height:415px;text-align:center;vertical-align:middle;}
@@ -72,9 +72,3 @@ body {background: #000 url(../images/body.jpg) no-repeat center 45px;-webkit-use
 .edit #dataEdit {display:inline-block;}
 .edit #dataSubmit {display:none;}
 .edit #editUname {display:inline-block;}
-
-/*.spin {-webkit-transform:rotate(360deg);-webkit-animation-name:spin;-webkit-animation-duration:1s;-webkit-animation-iteration-count:infinite;-webkit-animation-timing-function:linear;}
-@-webkit-keyframes spin{
-    from {-webkit-transform:rotate(0deg)}
-    to {-webkit-transform:rotate(360deg)}
-}*/
